@@ -18,11 +18,11 @@
 
 <body> 
     {%for post in page_obj %}
-        <h2> <a href="{{post.get_absolute_url}}"></a>{{ post.title }}</h2>
+        <h2> <a href="{{post.get_absolute_url}}">{{ post.title }}</a></h2>
        
     {% endfor %}
 
     {% include "components/home/pagination.html" %}
-    
+
 </body> 
 </html>

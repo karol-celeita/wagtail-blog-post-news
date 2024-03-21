@@ -1,0 +1,32 @@
+{% load static %}
+
+<h2>{{ post.get_review_count }} Comments  </h2>
+<h2>{{ post.get_average_rating_score }}/5.0 Average Rating  </h2>
+
+<ol class="comment_list">
+    {% for review in post.reviews.all %}
+    <li>
+        <article-reply>
+            <div class="comment-avatar">
+                <img src="" alt="">
+            </div>
+
+            <div class="comment-content">
+                <div class="meta">
+                    <span class="comment-author"><a href="">{{review.author}}</a></span>
+                    <span class="comment-date"><a href="">{{review.created}}</a></span>
+                    <div class="comment_rating">
+                        {% for _ in  review.get_star_count %}
+                        <i class="rating__icon "></i>
+                        {% endfor %}
+                    </div>
+                </div>
+                <p>
+                    {{review.text}}
+                </p>
+
+            </div>
+        </article-reply>
+    </li>
+    {% endfor %}
+</ol>

@@ -9,6 +9,8 @@ from wagtail.fields import StreamField
 from .blocks import ImageText, Quote, List
 from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.embeds.blocks import EmbedBlock
+from django.core.validators import MaxValueValidator, MinValueValidator #Star Rating
+
 
 class Post(models.Model):
     title = models.CharField(max_length=50)
@@ -51,3 +53,30 @@ class Post(models.Model):
     
     def get_absolute_url(self):
         return reverse('home:post_detail', args=[str(self.slug)])
+    
+    #rating average
+    def get_average_rating_score (self):
+        average_score = 0
+        if self.reviews.count() > 0:
+            total_score= sum([review.rating for review in self.reviews.all()])
+            average_score = total_score/self.reviews.count()
+        return round(average_score,1)
+    
+    #review count
+    def get_review_count(self):
+        return self.reviews.count()
+    
+class Review(models.Model):
+    post = models.ForeignKey(Post, related_name = 'reviews', on_delete=models.CASCADE)
+    author= models.CharField(max_length = 50)
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    text = models.TextField (blank=True)
+    created = models.DateTimeField(auto_now_add = True)
+    
+    class Meta:
+        ordering = ('-created',)
+        
+    def get_star_count(self):
+        return range(self.rating)
+    
+    

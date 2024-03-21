@@ -20,6 +20,10 @@
   
         <h2>{{ post.title }}</h2>
         <h2>{{ post.created }}</h2>
+        <div>{{ post.get_review_count }}</div>
+        <h2>{{ post.get_average_rating_score }}/5.0 Average Rating  </h2>
+        {% include "components/home/comments.html" %}
+        {% include "components/home/comments_form.html" %}
 
 
 </body> 
