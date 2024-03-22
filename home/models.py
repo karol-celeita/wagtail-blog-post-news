@@ -10,7 +10,20 @@ from .blocks import ImageText, Quote, List
 from wagtail.documents.blocks import DocumentChooserBlock
 from wagtail.embeds.blocks import EmbedBlock
 from django.core.validators import MaxValueValidator, MinValueValidator #Star Rating
+from taggit.managers import TaggableManager
+from wagtail.snippets.models import register_snippet
 
+@register_snippet
+class Categories(models.Model):
+    name = models.CharField(max_length= 50)
+    slug = models.SlugField(max_length= 80)
+    
+    class Meta():
+        verbose_name = "Post Category"
+        verbose_name_plural = "Post Categories"
+
+    def __str__(self):
+        return self.name
 
 class Post(models.Model):
     title = models.CharField(max_length=50)
@@ -44,6 +57,9 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
+    
+    tags = TaggableManager(blank=True)
+    category = models.ForeignKey(Categories, blank=True, null=True, on_delete=models.CASCADE, related_name='post_category')
     
     class Meta:
         ordering = ['-publish']

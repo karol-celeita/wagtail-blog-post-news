@@ -2,25 +2,26 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Review
 from django.core.paginator import Paginator
 from .forms import ReviewForm
+from taggit.models import Tag
 
 #List View
 
 def post_list(request):
     posts = Post.objects.all()
-    
+    tags = Tag.objects.all()
     #Pagination
     post_per_page = 3
     paginator = Paginator(posts, post_per_page)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
-    context = {'page_obj':page_obj}
+    context = {'page_obj':page_obj, "tags":tags}
     return render(request, 'home/index.html', context)
 
 # post_detail
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug,)
-    
+    tags = Tag.objects.all()
     # Review form
     if request.method == 'POST':
         print("es post")
@@ -40,6 +41,6 @@ def post_detail(request, slug):
     else:
         review_form = ReviewForm
     
-    context = {'post':post, 'review_form': review_form}
+    context = {'post':post, 'review_form': review_form, "tags":tags}
     return render(request, 'home/detail.html', context)
     
