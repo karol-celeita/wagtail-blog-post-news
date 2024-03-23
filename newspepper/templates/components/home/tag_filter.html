@@ -1,0 +1,5 @@
+
+<div>TAG FILTER</div>
+{% for tag in tags %}
+<span> <a href="{% url 'home:tag_filter' tag.slug %}">{{tag.name}}</a> </span>
+{% endfor %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load wagtailimages_tags static %}
+
+{% block content %}
+
+{% for post in page_obj %}
+    {% image post.image max-700x500 as header_image %}
+    <a href=""><img src="{{header_image.url}}" alt=""></a>
+
+    <h2 class="title">
+        {{post.title}}
+    </h2>
+
+    <h4>{{post.created}} - {{post.author}} - {{post.get_review_count}} Comments </h4>
+
+    {{post.intro|truncatewords:50|linebreaks}}
+    <a href="{{post.get_absolute_url}}"></a>
+{% endfor %}
+
+
+{% include "components/home/pagination.html" %}
+
+
+{% endblock%}

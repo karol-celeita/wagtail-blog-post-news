@@ -1,0 +1,5 @@
+
+<div>CATEGORIES</div>
+{% for category in categories %}
+<span> <a href="{% url 'home:category_filter' category.slug %}">{{category.name}}</a> </span>
+{% endfor %}
